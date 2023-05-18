@@ -15,6 +15,10 @@ export class User {
   @Column({ unique: false, nullable: false })
   last_name: string;
 
+  @Field(() => String, { description: 'pseudo field' })
+  @Column({ unique: true, nullable: false })
+  pseudo: string;
+
   @Field(() => String, { description: 'email field' })
   @Column({ unique: true, nullable: false })
   email: string;

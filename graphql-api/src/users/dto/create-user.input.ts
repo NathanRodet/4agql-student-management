@@ -16,6 +16,12 @@ export class CreateUserInput {
   @Length(3, 25)
   last_name: string;
 
+  @Field(() => String, { description: 'Pseudo field' })
+  @IsNotEmpty()
+  @IsString()
+  @Length(3, 25)
+  pseudo: string;
+
   @Field(() => String, { description: 'Email field' })
   @IsNotEmpty()
   @IsEmail()
