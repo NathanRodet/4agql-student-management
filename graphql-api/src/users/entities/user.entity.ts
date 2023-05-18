@@ -1,7 +1,8 @@
 import { ObjectType, Field } from '@nestjs/graphql';
-import { Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
+@Entity()
 export class User {
   @Field(() => String, { description: 'UUID field' })
   @PrimaryGeneratedColumn("uuid")
@@ -24,10 +25,10 @@ export class User {
   email: string;
 
   @Field(() => String, { description: 'password field' })
-  @Column({ nullable: false, select: false })
+  @Column({ nullable: false, select: true })
   password: string;
 
   @Field(() => String, { description: 'role field' })
-  @Column({ default: false })
-  role: boolean;
+  @Column({ default: "student" })
+  role: string;
 }

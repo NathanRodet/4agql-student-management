@@ -21,6 +21,7 @@ export class UsersService {
       const userData = {
         first_name: createUserInput.first_name,
         last_name: createUserInput.last_name,
+        pseudo: createUserInput.pseudo,
         email: createUserInput.email,
         password: await argon2.hash(createUserInput.password),
       }
