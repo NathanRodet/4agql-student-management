@@ -10,27 +10,31 @@ export class UsersResolver {
   constructor(private readonly usersService: UsersService) { }
 
   @Mutation(() => User)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
+  async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
     return this.usersService.create(createUserInput);
   }
 
   @Query(() => [User], { name: 'users' })
-  findAll() {
+  async findAll() {
     return this.usersService.findAll();
   }
 
   @Query(() => User, { name: 'user' })
-  findOne(@Args('id', { type: () => String }) id: UUID) {
+  async findOne(@Args('id', { type: () => String }) id: UUID) {
     return this.usersService.findOneById(id.id);
   }
 
   @Mutation(() => User)
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
+  async updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     return this.usersService.updatePassword(updateUserInput);
   }
 
-  @Mutation(() => User)
-  removeUser(@Args('id', { type: () => String }) id: UUID) {
-    return this.usersService.remove(id.id);
-  }
+  @Mutation(() => Boolean)
+  async removeUser(@Args('id', { type: () => String }) id: string)   {
+    const result = await this.usersService.remove(id);
+    return result.affected > 0;
+}
+
+
+
 }

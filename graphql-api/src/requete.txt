@@ -1,0 +1,27 @@
+mutation CreateUser {
+    createUser(
+        createUserInput: {email: "rudy@rudy.fr", first_name: "rudy", last_name: "moi", password: "rudyRudy@1", pseudo: "rudy"}
+    ) {
+        email
+        first_name
+        id
+        last_name
+        password
+        pseudo
+        role
+    }
+}
+
+mutation RemoveUser {
+    removeUser(id: "")
+}
+mutation UpdateUser {
+  updateUser(updateUserInput: {
+    id: "3fec1bc4-8914-49d5-8946-05a7ad66594e",
+    password: "zbrfbAihnbtr12@"
+  }) {
+    id
+    password
+  }
+}
+

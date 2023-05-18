@@ -49,10 +49,11 @@ export class UsersService {
       const userData = {
         password: await argon2.hash(updateUserInput.password),
       }
-      return await this.usersRepository.update({ id: updateUserInput.id }, userData);
+      await this.usersRepository.update({ id: updateUserInput.id }, userData);
+      return this.usersRepository.findOneBy({ id: updateUserInput.id });
     }
   }
-
+  
   async remove(id: string) {
     const user = await this.usersRepository.findOneBy({ id });
     if (!user)
