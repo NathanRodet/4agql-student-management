@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   database:
-    container_name: database-graphql-api
+    container_name: database-class-services
     image: postgres:latest
     environment:
       POSTGRES_PASSWORD: password
