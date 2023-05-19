@@ -18,8 +18,8 @@ export class ClassResolver {
   }
 
   @Query('class')
-  findOne(@Args('id') id: number) {
-    return this.classService.findOne(id);
+  findOne(@Args('id') id: string) {
+    return this.classService.findOneById(id);
   }
 
   @Mutation('updateClass')
@@ -28,7 +28,7 @@ export class ClassResolver {
   }
 
   @Mutation('removeClass')
-  remove(@Args('id') id: number) {
+  remove(@Args('id') id: string) {
     return this.classService.remove(id);
   }
 }

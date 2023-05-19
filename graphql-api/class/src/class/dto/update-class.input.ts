@@ -1,6 +1,9 @@
+import { PartialType } from '@nestjs/graphql';
 import { CreateClassInput } from './create-class.input';
-import { PartialType } from '@nestjs/mapped-types';
+
 
 export class UpdateClassInput extends PartialType(CreateClassInput) {
-  id: number;
+  id: string;
+  listEleves?: string[];
+  capaciter?: number;
 }

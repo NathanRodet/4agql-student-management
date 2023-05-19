@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ClassResolver } from './class.resolver';
-import { ClassService } from './class.service';
+import { ClassResolver } from '../src/class/class.resolver';
+import { ClassService } from '../src/class/class.service';
 
 describe('ClassResolver', () => {
   let resolver: ClassResolver;
