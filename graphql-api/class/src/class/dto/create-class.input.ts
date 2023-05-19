@@ -1,5 +1,5 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { IsEmail, IsNotEmpty, IsString, IsStrongPassword, Length } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, Length, isString } from 'class-validator';
 
 @InputType()
 export class CreateClassInput {
@@ -13,19 +13,13 @@ export class CreateClassInput {
   @Field(() => String, { description: 'Last name field' })
   @IsNotEmpty()
   @IsString()
-  @Length(3, 25)
+  @Length(3, 100)
   professeur_Id: string;
 
-  @Field(() => String, { description: 'Pseudo field' })
+  @Field(() => String, { description: 'list eleve field' })
   listEleves: string[];
 
-  @Field(() => String, { description: 'Email field' })
+  @Field(() => String, { description: 'Capaciter field' })
   @IsNotEmpty()
-  @IsEmail()
   capaciter: number;
-
-  @Field(() => String, { description: 'Password field' })
-  @IsNotEmpty()
-  @IsStrongPassword({ minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1 })
-  password: string;
 }

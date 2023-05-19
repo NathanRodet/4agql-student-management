@@ -26,7 +26,7 @@ export class UsersResolver {
 
   @Mutation(() => User)
   async updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.usersService.updatePassword(updateUserInput);
+    return this.usersService.update(updateUserInput);
   }
 
   @Mutation(() => Boolean)

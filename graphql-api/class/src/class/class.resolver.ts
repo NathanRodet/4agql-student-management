@@ -2,33 +2,43 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { ClassService } from './class.service';
 import { CreateClassInput } from './dto/create-class.input';
 import { UpdateClassInput } from './dto/update-class.input';
+import { Class } from './entities/class.entity';
+import { UUID } from './dto/params-user.input';
 
 @Resolver('Class')
 export class ClassResolver {
   constructor(private readonly classService: ClassService) {}
 
-  @Mutation('createClass')
-  create(@Args('createClassInput') createClassInput: CreateClassInput) {
+  @Mutation(() => Class)
+  async create(@Args('createClassInput') createClassInput: CreateClassInput) {
     return this.classService.create(createClassInput);
   }
 
-  @Query('class')
-  findAll() {
+  @Query(() => [Class], { name: 'GetAllClass' })
+  async findAll() {
     return this.classService.findAll();
   }
 
-  @Query('class')
-  findOne(@Args('id') id: string) {
-    return this.classService.findOneById(id);
+  @Query(() => Class, { name: 'findOneClass' })
+  async findOne(@Args('id', { type: () => String }) id: UUID) {
+    return this.classService.findOneById(id.id);
   }
 
-  @Mutation('updateClass')
-  update(@Args('updateClassInput') updateClassInput: UpdateClassInput) {
+  @Mutation(() => Class)
+  async update(@Args('updateClassInput') updateClassInput: UpdateClassInput) {
     return this.classService.update(updateClassInput.id, updateClassInput);
   }
 
-  @Mutation('removeClass')
-  remove(@Args('id') id: string) {
+ @Mutation(() => Boolean)
+  async remove(@Args('id') id: string) {
     return this.classService.remove(id);
   }
 }
+
+
+
+// @Mutation(() => Boolean)
+// async removeUser(@Args('id', { type: () => String }) id: string)   {
+//   const result = await this.usersService.remove(id);
+//   return result.affected > 0;
+// }

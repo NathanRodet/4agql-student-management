@@ -17,7 +17,7 @@ export class Class {
   professeur_Id: string;
 
   @Field(() => String, { description: 'list eleve field' })
-  @Column({ unique: false, nullable: false })
+  @Column("simple-array", { nullable: true })
   listEleves: string[];
 
   @Field(() => Number, { description: 'capaciter field' })

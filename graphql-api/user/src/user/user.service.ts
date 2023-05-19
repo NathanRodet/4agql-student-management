@@ -41,13 +41,14 @@ export class UsersService {
       return user;
   }
 
-  async updatePassword(updateUserInput: UpdateUserInput) {
+  async update(updateUserInput: UpdateUserInput) {
     const user = await this.usersRepository.findOneBy({ id: updateUserInput.id });
     if (!user)
       throw new HttpException({ message: 'User not found.' }, HttpStatus.NOT_FOUND);
     else {
       const userData = {
         password: await argon2.hash(updateUserInput.password),
+        // role: updateUserInput.role,
       }
       await this.usersRepository.update({ id: updateUserInput.id }, userData);
       return this.usersRepository.findOneBy({ id: updateUserInput.id });

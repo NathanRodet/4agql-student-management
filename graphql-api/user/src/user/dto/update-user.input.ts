@@ -13,6 +13,10 @@ export class UpdateUserInput extends PartialType(CreateUserInput) {
   @Field(() => String, { description: 'Password field' })
   @IsNotEmpty()
   @IsStrongPassword({ minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1 })
-  password: string;
+  password?: string;
+
+  @Field(() => String, { description: 'Role field' })
+  @IsNotEmpty()
+  role?: string;
 
 }
