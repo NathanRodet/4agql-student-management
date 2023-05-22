@@ -1,0 +1,24 @@
+type Class {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input CreateClassInput {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input UpdateClassInput {
+  id: Int!
+}
+
+type Query {
+  classes: [Class]!
+  class(id: Int!): Class
+}
+
+type Mutation {
+  createClass(createClassInput: CreateClassInput!): Class!
+  updateClass(updateClassInput: UpdateClassInput!): Class!
+  removeClass(id: Int!): Class
+}
