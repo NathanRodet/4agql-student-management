@@ -14,7 +14,6 @@ export class ClassesService {
   ) { }
   async create(createClassInput: CreateClassesInput) {
     const classs = await this.ClassRepository.findOne({ where:{ id: createClassInput.professeur_Id}, select: ['id'] });
-    // const classs = await this.ClassRepository.findOneBy({ name: createClassInput.name });
     if (classs)
       throw new HttpException({ message: 'Class already registered.' }, HttpStatus.NOT_FOUND);
     else {
@@ -34,6 +33,14 @@ export class ClassesService {
 
   async findOneById(id: string) {
     const classs = await this.ClassRepository.findOneBy({ id });
+    if (!classs)
+      throw new HttpException({ message: 'Classe not found.' }, HttpStatus.NOT_FOUND);
+    else
+      return classs;
+  }
+
+  async findOneByName(name: string) {
+    const classs = await this.ClassRepository.findOneBy({ name });
     if (!classs)
       throw new HttpException({ message: 'Classe not found.' }, HttpStatus.NOT_FOUND);
     else

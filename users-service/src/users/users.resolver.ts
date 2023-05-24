@@ -20,8 +20,13 @@ export class UsersResolver {
   }
 
   @Query(() => User, { name: 'user' })
-  async findOne(@Args('id', { type: () => String }) id: UUID) {
+  async findOneByID(@Args('id', { type: () => String }) id: UUID) {
     return this.usersService.findOneById(id.id);
+  }
+
+  @Query(() => User, { name: 'findOneUserByName' })
+  async findOneByName(@Args('lastName', { type: () => String }) lastName: string) {
+    return this.usersService.findOneByName(lastName);
   }
 
   @Mutation(() => User)

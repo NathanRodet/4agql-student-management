@@ -10,7 +10,7 @@ export class UpdateClassesInput extends PartialType(CreateClassesInput) {
   @IsUUID()
   id: string;
 
-  @Field(() => String, { description: 'listEleves field' })
+  @Field(() => [String], { description: 'listEleves field' })
   listEleves: string[];
 
   @Field(() => Number, { description: 'capaciter field' })

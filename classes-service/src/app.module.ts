@@ -7,7 +7,6 @@ import { AppService } from './app.service';
 import { Classes } from './classes/entities/classes.entity';
 import { ClassesModule } from './classes/classes.module';
 
-
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({

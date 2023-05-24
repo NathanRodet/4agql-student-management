@@ -19,8 +19,8 @@ export class UsersService {
       throw new HttpException({ message: 'Email already registered.' }, HttpStatus.NOT_FOUND);
     else {
       const userData = {
-        first_name: createUserInput.first_name,
-        last_name: createUserInput.last_name,
+        firstName: createUserInput.firsName,
+        lastName: createUserInput.lastName,
         pseudo: createUserInput.pseudo, 
         email: createUserInput.email,
         password: await argon2.hash(createUserInput.password),
@@ -40,6 +40,15 @@ export class UsersService {
     else
       return user;
   }
+
+  async findOneByName(lastName: string) {
+    const user = await this.usersRepository.findOneBy({ lastName });
+    if (!user)
+      throw new HttpException({ message: 'User not found.' }, HttpStatus.NOT_FOUND);
+    else
+      return user;
+  }
+
 
   async update(updateUserInput: UpdateUserInput) {
     const user = await this.usersRepository.findOneBy({ id: updateUserInput.id });

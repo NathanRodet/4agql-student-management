@@ -8,9 +8,9 @@ export class Grade {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Field(() => String, { description: 'course_id field' })
+  @Field(() => String, { description: 'classe_id field' })
   @Column({ unique: false, nullable: false })
-  course_id: string;
+  classe_id: string;
 
   @Field(() => String, { description: 'professor_id field' })
   @Column({ unique: false, nullable: false })

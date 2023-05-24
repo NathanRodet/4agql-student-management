@@ -10,11 +10,11 @@ export class User {
 
   @Field(() => String, { description: 'first_name field' })
   @Column({ unique: false, nullable: false })
-  first_name: string;
+  firstName: string;
 
   @Field(() => String, { description: 'last_name field' })
   @Column({ unique: false, nullable: false })
-  last_name: string;
+  lastName: string;
 
   @Field(() => String, { description: 'pseudo field' })
   @Column({ unique: true, nullable: false })

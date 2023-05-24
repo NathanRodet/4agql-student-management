@@ -14,7 +14,7 @@ input UpdateClassInput {
 
 type Query {
   classes: [Class]!
-  class(id: Int!): Class
+  class(id: String): Class
 }
 
 type Mutation {

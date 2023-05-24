@@ -4,8 +4,7 @@ import { ClassesService } from './classes.service';
 import { Classes } from './entities/classes.entity';
 import { CreateClassesInput } from './dto/create-class.input';
 import { UpdateClassesInput } from './dto/update-class.input';
-
-@Resolver('Classes')
+@Resolver(() => Classes)
 export class ClassesResolver {
   constructor(private readonly classesService: ClassesService) {}
 
@@ -15,13 +14,18 @@ export class ClassesResolver {
   }
 
   @Query(() => [Classes], { name: 'GetAllClass' })
-  async findAll(@Args('id', { type: () => String }) id: UUID) {
+  async findAll() {
     return this.classesService.findAll();
   }
 
-  @Query(() => Classes, { name: 'findOneClass' })
-  async findOne(@Args('id', { type: () => String }) id: UUID) {
+  @Query(() => Classes, { name: 'findOneClassById' })
+  async findOneByID(@Args('id', { type: () => String }) id: UUID) {
     return this.classesService.findOneById(id.id);
+  }
+
+  @Query(() => Classes, { name: 'findOneClassByName' })
+  async findOneByName(@Args('name', { type: () => String , nullable: false  }) name: string) {
+    return this.classesService.findOneByName(name);
   }
 
   @Mutation(() => Classes)

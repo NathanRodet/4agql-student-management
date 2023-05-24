@@ -1,6 +1,5 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-
 @ObjectType()
 @Entity()
 export class Classes {
@@ -16,7 +15,7 @@ export class Classes {
   @Column({ unique: true, nullable: false })
   professeur_Id: string;
 
-  @Field(() => String, { description: 'list eleve field' })
+  @Field(() => [String], { description: 'list eleve field' })
   @Column("simple-array", { nullable: true })
   listEleves: string[];
 
