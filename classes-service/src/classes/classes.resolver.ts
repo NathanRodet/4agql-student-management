@@ -5,7 +5,7 @@ import { Classes } from './entities/classes.entity';
 import { CreateClassesInput } from './dto/create-class.input';
 import { UpdateClassesInput } from './dto/update-class.input';
 
-@Resolver('Class')
+@Resolver('Classes')
 export class ClassesResolver {
   constructor(private readonly classesService: ClassesService) {}
 
@@ -15,7 +15,7 @@ export class ClassesResolver {
   }
 
   @Query(() => [Classes], { name: 'GetAllClass' })
-  async findAll() {
+  async findAll(@Args('id', { type: () => String }) id: UUID) {
     return this.classesService.findAll();
   }
 

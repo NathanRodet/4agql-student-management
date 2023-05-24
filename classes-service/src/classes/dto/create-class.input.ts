@@ -10,7 +10,7 @@ export class CreateClassesInput {
   @Length(3, 25)
   name: string;
 
-  @Field(() => String, { description: 'Last name field' })
+  @Field(() => String, { description: 'professeur_Id field' })
   @IsNotEmpty()
   @IsString()
   @Length(3, 100)

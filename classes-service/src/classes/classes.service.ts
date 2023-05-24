@@ -13,7 +13,8 @@ export class ClassesService {
     private ClassRepository: Repository<Classes>,
   ) { }
   async create(createClassInput: CreateClassesInput) {
-    const classs = await this.ClassRepository.findOneBy({ name: createClassInput.name });
+    const classs = await this.ClassRepository.findOne({ where:{ id: createClassInput.professeur_Id}, select: ['id'] });
+    // const classs = await this.ClassRepository.findOneBy({ name: createClassInput.name });
     if (classs)
       throw new HttpException({ message: 'Class already registered.' }, HttpStatus.NOT_FOUND);
     else {

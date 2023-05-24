@@ -10,7 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    public usersRepository: Repository<User>,
   ) { }
 
   async create(createUserInput: CreateUserInput) {
@@ -21,7 +21,7 @@ export class UsersService {
       const userData = {
         first_name: createUserInput.first_name,
         last_name: createUserInput.last_name,
-        pseudo: createUserInput.pseudo,
+        pseudo: createUserInput.pseudo, 
         email: createUserInput.email,
         password: await argon2.hash(createUserInput.password),
       }
