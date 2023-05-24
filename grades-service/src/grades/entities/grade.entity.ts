@@ -20,4 +20,8 @@ export class Grade {
   @Column({ unique: true, nullable: false })
   note: number;
 
+  @Field(() => String, { description: 'student_id field' })
+  @Column({ unique: false, nullable: false })
+  student_id: string;
+
 }

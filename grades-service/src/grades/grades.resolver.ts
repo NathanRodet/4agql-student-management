@@ -13,11 +13,15 @@ export class GradesResolver {
     return this.gradesService.create(createGradeInput);
   }
 
-  @Query(() => [Grade], { name: 'GetAllGrades' })
-  async findAll() {
-    return this.gradesService.findAll();
+  @Query(() => [Grade], { name: 'GetAllGradesByStudent' })
+  async findAll(student_id: string, createGradeInput: CreateGradeInput ) {
+    return this.gradesService.findAll(student_id, createGradeInput);
   }
-  
+
+  @Query(() => Grade, { name: 'gradesStudent' })
+  findAllNoteStudent(@Args('id') student_id: string) {
+    return this.gradesService.findOneByStudentId(student_id);
+  }
   @Query(() => Grade, { name: 'grade' })
   findOne(@Args('id') id: string) {
     return this.gradesService.findOneById(id);

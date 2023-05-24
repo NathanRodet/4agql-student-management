@@ -16,7 +16,13 @@ export class CreateGradeInput {
   @Length(3, 100)
   professor_id: string;
 
-  @Field(() => Number, { description: 'note field' })
+  @Field(() => Number, { description: 'grade field' })
   @IsNotEmpty()
-  note: number;
+  grade: number;
+
+  @Field(() => String, { description: 'student_id field' })
+  @IsNotEmpty()
+  @IsString()
+  @Length(3, 100)
+  student_id: string;
 }

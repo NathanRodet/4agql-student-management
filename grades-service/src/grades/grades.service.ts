@@ -15,17 +15,29 @@ export class GradesService {
     const gradeData = {
         classe_id: createGradeInput.classe_id,
         professor_id: createGradeInput.professor_id,
-        note: createGradeInput.note,
+        note: createGradeInput.grade,
+        student_id: createGradeInput.student_id,
     }
     return await this.gradesRepository.save(this.gradesRepository.create(gradeData));
   }
 
-  async findAll() {
-    return await this.gradesRepository.find();
+  async findAll(student_id: string, createGradeInput: CreateGradeInput) {
+    if(student_id === createGradeInput.student_id ){
+      return await this.gradesRepository.find();
+    }
+    
   }
-
+  
   async findOneById(id: string) {
     const grade = await this.gradesRepository.findOneBy({ id });
+    if (!grade)
+      throw new HttpException({ message: 'Grade not found.' }, HttpStatus.NOT_FOUND);
+    else
+      return grade;
+  }
+
+  async findOneByStudentId(student_id: string) {
+    const grade = await this.gradesRepository.findOneBy({ student_id });
     if (!grade)
       throw new HttpException({ message: 'Grade not found.' }, HttpStatus.NOT_FOUND);
     else
