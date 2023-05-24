@@ -13,7 +13,7 @@ export class GradesService {
 
   async create(createGradeInput: CreateGradeInput) {
     const gradeData = {
-        course_id: createGradeInput.course_id,
+        classe_id: createGradeInput.classe_id,
         professor_id: createGradeInput.professor_id,
         note: createGradeInput.note,
     }

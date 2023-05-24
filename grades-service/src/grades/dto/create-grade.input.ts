@@ -8,7 +8,7 @@ export class CreateGradeInput {
   @IsNotEmpty()
   @IsString()
   @Length(3, 100)
-  course_id: string;
+  classe_id: string;
 
   @Field(() => String, { description: 'professor_id field' })
   @IsNotEmpty()
