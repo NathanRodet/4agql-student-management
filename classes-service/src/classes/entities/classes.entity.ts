@@ -12,7 +12,7 @@ export class Classes {
   name: string;
 
   @Field(() => String, { description: 'professeur id field' })
-  @Column({ unique: true, nullable: false })
+  @Column({ unique: false, nullable: false })
   professeur_Id: string;
 
   @Field(() => [String], { description: 'list eleve field' })
