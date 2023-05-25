@@ -19,9 +19,11 @@ export class ClassesResolver {
   }
 
   @Query(() => Classes, { name: 'findOneClassById' })
-  async findOneByID(@Args('id', { type: () => String }) id: UUID) {
-    return this.classesService.findOneById(id.id);
+  async findOneByID(@Args('id', { type: () => String }) id: string) {
+    return this.classesService.findOneById(id);
   }
+
+  
 
   @Query(() => Classes, { name: 'findOneClassByName' })
   async findOneByName(@Args('name', { type: () => String , nullable: false  }) name: string) {

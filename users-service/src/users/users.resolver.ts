@@ -20,8 +20,8 @@ export class UsersResolver {
   }
 
   @Query(() => User, { name: 'user' })
-  async findOneByID(@Args('id', { type: () => String }) id: UUID) {
-    return this.usersService.findOneById(id.id);
+  async findOneByID(@Args('id', { type: () => String }) id: string) {
+    return this.usersService.findOneById(id);
   }
 
   @Query(() => User, { name: 'findOneUserByName' })

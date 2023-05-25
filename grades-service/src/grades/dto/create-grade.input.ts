@@ -4,7 +4,7 @@ import { IsEmail, IsNotEmpty, IsString, IsStrongPassword, Length } from 'class-v
 @InputType()
 export class CreateGradeInput {
 
-  @Field(() => String, { description: 'course_id name field' })
+  @Field(() => String, { description: 'class_id name field' })
   @IsNotEmpty()
   @IsString()
   @Length(3, 100)

@@ -57,7 +57,7 @@ export class UsersService {
     else {
       const userData = {
         password: await argon2.hash(updateUserInput.password),
-        // role: updateUserInput.role,
+        role: updateUserInput.role,
       }
       await this.usersRepository.update({ id: updateUserInput.id }, userData);
       return this.usersRepository.findOneBy({ id: updateUserInput.id });

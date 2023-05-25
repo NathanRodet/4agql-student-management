@@ -13,14 +13,9 @@ export class GradesResolver {
     return this.gradesService.create(createGradeInput);
   }
 
-  @Query(() => [Grade], { name: 'GetAllGradesByStudent' })
-  async findAll(student_id: string, createGradeInput: CreateGradeInput ) {
-    return this.gradesService.findAll(student_id, createGradeInput);
-  }
-
-  @Query(() => Grade, { name: 'gradesStudent' })
-  findAllNoteStudent(@Args('id') student_id: string) {
-    return this.gradesService.findOneByStudentId(student_id);
+  @Query(() => [Grade], { name: 'allgradesStudent' })
+  async findAllNoteStudent(@Args('id') student_id: string) {
+    return this.gradesService.findAllNote(student_id);
   }
   @Query(() => Grade, { name: 'grade' })
   findOne(@Args('id') id: string) {
