@@ -12,9 +12,9 @@ export class Grade {
   @Column({ unique: false, nullable: false })
   classe_id: string;
 
-  @Field(() => String, { description: 'professor_id field' })
-  @Column({ unique: false, nullable: false })
-  professor_id: string;
+  // @Field(() => String, { description: 'professor_id field' })
+  // @Column({ unique: false, nullable: false })
+  // professor_id: string;
 
   @Field(() => Number, { description: 'note field' })
   @Column({ unique: true, nullable: false })
