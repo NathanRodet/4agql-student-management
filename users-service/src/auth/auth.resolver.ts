@@ -1,4 +1,4 @@
-import { Resolver, Args, Mutation } from '@nestjs/graphql';
+import { Resolver, Args, Mutation, Query } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { LoginInput } from './login.input';
 import { AuthType } from './auth.type';
@@ -7,7 +7,7 @@ import { AuthType } from './auth.type';
 export class AuthResolver {
   constructor(private authService: AuthService) {}
 
-  @Mutation(() => AuthType)
+  @Query(() => AuthType, { name: 'Login' })
   async login(@Args('loginInput') loginInput: LoginInput) {
     const user = await this.authService.validateUser(loginInput.email, loginInput.password);
     if (!user) {
@@ -16,7 +16,7 @@ export class AuthResolver {
     return this.authService.login(user);
   }
 
-  @Mutation(() => Boolean)
+  @Query(() => Boolean)
   async logout(): Promise<boolean> {
     return true;
   }
