@@ -66,6 +66,7 @@ export class ClassesService {
     if (!user)
       throw new HttpException({ message: 'Class not found.' }, HttpStatus.NOT_FOUND);
     else
+    if(user.listEleves == null || user.listEleves.length === 0)
       return await this.ClassRepository.delete({ id });
   }
 }

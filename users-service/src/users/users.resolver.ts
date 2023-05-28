@@ -2,12 +2,9 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { UUID } from './dto/params-user.input';
 import { UsersService } from './users.service';
-import { UseGuards } from '@nestjs/common';
-import { UserGuard } from 'src/auth/user.guard';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { CurrentUser } from 'src/auth/current-user.decorator';
+import { Roles } from 'src/auth/guards/auth.decorator';
+import { Role } from 'src/auth/guards/auth.enum';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -33,16 +30,16 @@ export class UsersResolver {
     return this.usersService.findOneByName(lastName);
   }
 
-
-  @UseGuards(JwtAuthGuard, UserGuard)
+  
+  @Roles(Role.student, Role.professor)
   @Mutation(() => User)
-  async updateUser(@CurrentUser() user: User, @Args('updateUserInput') updateUserInput: UpdateUserInput) {
+  async updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     return this.usersService.update(updateUserInput.id, updateUserInput);
   }
 
-  @UseGuards(JwtAuthGuard, UserGuard)
+  @Roles(Role.student, Role.professor)
   @Mutation(() => Boolean)
-  async removeUser( @CurrentUser() user: User,@Args('id', { type: () => String }) id: string)   {
+  async removeUser(@Args('id', { type: () => String }) id: string){
     const result = await this.usersService.remove(id);
     return result.affected > 0;
 }
