@@ -57,7 +57,7 @@ export class UsersService {
       return user;
   } 
 
-  async update(updateUserInput: UpdateUserInput) {
+  async update(id: String, updateUserInput: UpdateUserInput) {
     const user = await this.usersRepository.findOneBy({ id: updateUserInput.id });
     if (!user)
       throw new HttpException({ message: 'User not found.' }, HttpStatus.NOT_FOUND);
