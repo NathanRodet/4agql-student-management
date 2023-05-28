@@ -2,11 +2,11 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
-import { Role } from './auth.enum';
 import { DecodeToken, VerifyToken } from '../utils/jwt';
+import { Role } from './auth.enum';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AuthGuards implements CanActivate {
   constructor(private jwtService: JwtService, private reflector: Reflector) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -33,9 +33,9 @@ export class AuthGuard implements CanActivate {
 
     // Get the data from the token
     const tokenData = await DecodeToken(authorizationHeader.split(' ')[1]);
-
     // Check if user has the required role
     if (requiredRoles.find(role => role === tokenData.role)) {
+
       return true;
     } else {
       throw new UnauthorizedException('Unauthorized');

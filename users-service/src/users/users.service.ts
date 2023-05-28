@@ -1,5 +1,5 @@
 const argon2 = require('argon2');
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Put, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { Repository } from 'typeorm';
@@ -57,18 +57,24 @@ export class UsersService {
       return user;
   } 
 
+  
   async update(id: String, updateUserInput: UpdateUserInput) {
     const user = await this.usersRepository.findOneBy({ id: updateUserInput.id });
     if (!user)
       throw new HttpException({ message: 'User not found.' }, HttpStatus.NOT_FOUND);
     else {
-      const userData = {
-        password: await argon2.hash(updateUserInput.password),
-        role: updateUserInput.role,
+      if (user.id !== user.id) {
+        throw new UnauthorizedException();
+      }else{
+        const userData = {
+          password: await argon2.hash(updateUserInput.password),
+          role: updateUserInput.role,
+        }
+        await this.usersRepository.update({ id: updateUserInput.id }, userData);
+        return this.usersRepository.findOneBy({ id: updateUserInput.id });
       }
-      await this.usersRepository.update({ id: updateUserInput.id }, userData);
-      return this.usersRepository.findOneBy({ id: updateUserInput.id });
-    }
+      }
+      
   }
   
   async remove(id: string) {

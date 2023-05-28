@@ -1,36 +1,36 @@
 import { HttpException, HttpStatus } from "@nestjs/common";
 import { TokenStructure } from "../dto/login.input";
-import { Token } from "graphql";
-export const JWT_SECRET = 'secret';
+import { JwtService } from '@nestjs/jwt';
+import { jwtConstants } from "../constants";
 
-let jwt = require('jsonwebtoken');
+let jwtService = new JwtService({ secret: jwtConstants.secret });
 
-export async function GenerateToken(params: TokenStructure): Promise<Token> {
+export async function GenerateToken(params: TokenStructure): Promise<string> {
   try {
-    return await jwt.sign({
+    console.log(params)
+    return jwtService.sign({
       id: params.id,
       role: params.role,
-      iat: Math.floor(Date.now() / 1000),
-      exp: Math.floor(Date.now() / 1000) + (60 * 60),
-    }, JWT_SECRET);
+    });
   } catch (error) {
     throw new HttpException({ message: 'Error generating token' }, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }
 
-export async function VerifyToken(token: Token): Promise<boolean> {
+export async function VerifyToken(token: string): Promise<boolean> {
   try {
-    const verified: boolean = await jwt.verify(token, JWT_SECRET);
-    return verified;
+    const verified: any = jwtService.verify(token);
+    return verified != null;
   } catch (error) {
     throw new HttpException({ message: 'Token is expired or invalid' }, HttpStatus.UNAUTHORIZED);
   }
 }
 
-export async function DecodeToken(token: Token): Promise<TokenStructure> {
+export async function DecodeToken(token: string): Promise<TokenStructure> {
   try {
-    return await jwt.decode(token);
+    return jwtService.decode(token) as TokenStructure;
   } catch (error) {
     throw new HttpException({ message: 'Error decoding token' }, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }
+
