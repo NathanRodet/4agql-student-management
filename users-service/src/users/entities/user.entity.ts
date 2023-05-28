@@ -1,10 +1,13 @@
-import { ObjectType, Field } from '@nestjs/graphql';
+import { ObjectType, Field, Directive } from '@nestjs/graphql';
+import { Resolver } from 'dns';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
+@Directive('@extends')
 @Entity()
 export class User {
   @Field(() => String, { description: 'UUID field' })
+  @Directive('@external')
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
@@ -31,4 +34,6 @@ export class User {
   @Field(() => String, { description: 'role field' })
   @Column({ default: "student" })
   role: string;
+
+  
 }

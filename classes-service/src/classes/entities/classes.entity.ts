@@ -1,5 +1,6 @@
-import { ObjectType, Field } from '@nestjs/graphql';
+import { ObjectType, Field, Directive } from '@nestjs/graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
 @ObjectType()
 @Entity()
 export class Classes {
@@ -15,9 +16,11 @@ export class Classes {
   @Column({ unique: false, nullable: false })
   professeur_Id: string;
 
-  @Field(() => [String], { description: 'list eleve field' })
+  @Field(() => [User], { description: 'list eleve field' })
+  @Directive('@external')
+  @Directive('@requires(fields: "id")')
   @Column("simple-array", { nullable: true })
-  listEleves: string[];
+  listEleves: User[];
 
   @Field(() => Number, { description: 'capaciter field' })
   @Column({ unique: false, nullable: false })
