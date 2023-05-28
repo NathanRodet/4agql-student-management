@@ -3,10 +3,13 @@ import { ClassesService } from './classes.service';
 import { Classes } from './entities/classes.entity';
 import { CreateClassesInput } from './dto/create-class.input';
 import { UpdateClassesInput } from './dto/update-class.input';
+import { Role } from 'src/auth/guards/auth.enum';
+import { Roles } from 'src/auth/guards/auth.decorator';
 @Resolver(() => Classes)
 export class ClassesResolver {
   constructor(private readonly classesService: ClassesService) {}
 
+  @Roles(Role.professor)
   @Mutation(() => Classes)
   async create(@Args('createClassInput') createClassInput: CreateClassesInput) {
     return this.classesService.create(createClassInput);
@@ -29,11 +32,13 @@ export class ClassesResolver {
     return this.classesService.findOneByName(name);
   }
 
+  @Roles(Role.professor)
   @Mutation(() => Classes)
   async update(@Args('updateClassesInput') updateClassesInput: UpdateClassesInput) {
     return this.classesService.update(updateClassesInput.id, updateClassesInput);
   }
 
+ @Roles(Role.professor)
  @Mutation(() => Boolean)
   async remove(@Args('id') id: string) {
     return this.classesService.remove(id);

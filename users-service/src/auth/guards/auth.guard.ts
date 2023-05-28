@@ -35,7 +35,6 @@ export class AuthGuards implements CanActivate {
     const tokenData = await DecodeToken(authorizationHeader.split(' ')[1]);
     // Check if user has the required role
     if (requiredRoles.find(role => role === tokenData.role)) {
-
       return true;
     } else {
       throw new UnauthorizedException('Unauthorized');

@@ -17,7 +17,7 @@ export class Grade {
   // professor_id: string;
 
   @Field(() => Number, { description: 'note field' })
-  @Column({ unique: true, nullable: false })
+  @Column({ unique: false, nullable: false })
   note: number;
 
   @Field(() => String, { description: 'student_id field' })

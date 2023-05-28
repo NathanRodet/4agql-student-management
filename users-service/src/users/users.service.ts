@@ -5,6 +5,8 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Role } from 'src/auth/guards/auth.enum';
+import { LoginInput, TokenStructure } from 'src/auth/dto/login.input';
 
 @Injectable()
 export class UsersService {
@@ -82,6 +84,6 @@ export class UsersService {
     if (!user)
       throw new HttpException({ message: 'User not found.' }, HttpStatus.NOT_FOUND);
     else
-      return await this.usersRepository.delete({ id });
+      return await this.usersRepository.delete({ id });   
   }
 }

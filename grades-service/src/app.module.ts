@@ -6,6 +6,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Grade } from './grades/entities/grade.entity';
 import { GradesModule } from './grades/grades.module';
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -23,7 +24,9 @@ import { GradesModule } from './grades/grades.module';
       entities: [Grade],
       synchronize: true,
     }),
+    AuthModule,
     GradesModule,
+  
   ],
   controllers: [AppController],
   providers: [AppService],
