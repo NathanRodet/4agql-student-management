@@ -1,6 +1,20 @@
-import { CreateClassInput } from './create-class.input';
-import { PartialType } from '@nestjs/mapped-types';
+import { IsNotEmpty, IsUUID } from 'class-validator';
+import { InputType, Field, PartialType } from '@nestjs/graphql';
+import { CreateClassesInput } from './create-class.input';
 
-export class UpdateClassInput extends PartialType(CreateClassInput) {
-  id: number;
+@InputType()
+export class UpdateClassesInput extends PartialType(CreateClassesInput) {
+
+  @Field(() => String, { description: 'Password field' })
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+
+  @Field(() => [String], { description: 'listEleves field' })
+  listEleves: string[];
+
+  @Field(() => Number, { description: 'capaciter field' })
+  @IsNotEmpty()
+  capaciter: number;
+
 }

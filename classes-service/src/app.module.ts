@@ -1,17 +1,31 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { Classes } from './classes/entities/classes.entity';
 import { ClassesModule } from './classes/classes.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      playground: true,
       autoSchemaFile: true,
+      sortSchema: true,
+      driver: ApolloDriver,
     }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5434,
+      username: 'postgres',
+      password: 'password',
+      database: 'postgres',
+      entities: [Classes],
+      synchronize: true,
+    }),
+    AuthModule,
     ClassesModule,
   ],
   controllers: [AppController],

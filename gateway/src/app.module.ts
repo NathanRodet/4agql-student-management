@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloGatewayDriver, ApolloGatewayDriverConfig } from '@nestjs/apollo';
 import { IntrospectAndCompose } from '@apollo/gateway';
+import { AuthModule } from './auth/auth.module';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -12,13 +13,14 @@ import { IntrospectAndCompose } from '@apollo/gateway';
       gateway: {
         supergraphSdl: new IntrospectAndCompose({
           subgraphs: [
-            { name: 'users', url: 'http://localhost:3001/graphql' },
-            { name: 'grades', url: 'http://localhost:3002/graphql' },
-            { name: 'classes', url: 'http://localhost:3003/graphql' },
+            { name: 'users', url: 'http://localhost:4003/graphql' },
+            { name: 'grades', url: 'http://localhost:4002/graphql' },
+            { name: 'classes', url: 'http://localhost:4001/graphql' },
           ],
         }),
       },
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,6 +1,21 @@
-import { CreateUserInput } from './create-user.input';
-import { PartialType } from '@nestjs/mapped-types';
+import { IsNotEmpty, IsStrongPassword, IsUUID } from 'class-validator';
+import { InputType, Field } from '@nestjs/graphql';
 
-export class UpdateUserInput extends PartialType(CreateUserInput) {
-  id: number;
+@InputType()
+export class UpdateUserInput {
+
+  @Field(() => String, { description: 'Password field' })
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+
+  @Field(() => String, { description: 'Password field' })
+  @IsNotEmpty()
+  @IsStrongPassword({ minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1 })
+  password?: string;
+
+  @Field(() => String, { description: 'Role field' })
+  @IsNotEmpty()
+  role?: string;
+
 }

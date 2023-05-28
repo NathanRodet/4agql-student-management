@@ -1,6 +1,17 @@
+import { IsNotEmpty, IsUUID } from 'class-validator';
+import { InputType, Field, PartialType } from '@nestjs/graphql';
 import { CreateGradeInput } from './create-grade.input';
-import { PartialType } from '@nestjs/mapped-types';
 
-export class UpdateGradeInput extends PartialType(CreateGradeInput) {
-  id: number;
+@InputType()
+export class UpdateGradesInput extends PartialType(CreateGradeInput) {
+
+  @Field(() => String, { description: 'id field' })
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+
+  @Field(() => Number, { description: 'note field' })
+  @IsNotEmpty()
+  note: number;
+
 }

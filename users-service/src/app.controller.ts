@@ -6,7 +6,7 @@ export class AppController {
   constructor(private readonly appService: AppService) { }
 
   @Get()
-  isAlive(): Promise<string> {
-    return this.appService.healthCheck();
+  async healthCheck(): Promise<string> {
+    return this.appService.isAlive();
   }
 }

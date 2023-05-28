@@ -1,26 +1,72 @@
-import { Injectable } from '@nestjs/common';
-import { CreateClassInput } from './dto/create-class.input';
-import { UpdateClassInput } from './dto/update-class.input';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Classes } from './entities/classes.entity';
+import { CreateClassesInput } from './dto/create-class.input';
+import { UpdateClassesInput } from './dto/update-class.input';
 
 @Injectable()
 export class ClassesService {
-  create(createClassInput: CreateClassInput) {
-    return 'This action adds a new class';
+
+  constructor(
+    @InjectRepository(Classes)
+    private ClassRepository: Repository<Classes>,
+  ) { }
+  async create(createClassInput: CreateClassesInput) {
+    const classs = await this.ClassRepository.findOne({ where:{ id: createClassInput.professeur_Id}, select: ['id'] });
+    if (classs)
+      throw new HttpException({ message: 'Class already registered.' }, HttpStatus.NOT_FOUND);
+    else {
+      const ClassData = {
+        name: createClassInput.name,
+        professeur_Id: createClassInput.professeur_Id,
+        listEleves: createClassInput.listEleves,
+        capaciter: createClassInput.capaciter
+      }
+      return await this.ClassRepository.save(this.ClassRepository.create(ClassData));
+    }
   }
 
-  findAll() {
-    return `This action returns all classes`;
+  async findAll() {
+    return await this.ClassRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} class`;
+  async findOneById(id: string) {
+    const classs = await this.ClassRepository.findOneBy({ id });
+    if (!classs)
+      throw new HttpException({ message: 'Classe not found.' }, HttpStatus.NOT_FOUND);
+    else
+      return classs;
   }
 
-  update(id: number, updateClassInput: UpdateClassInput) {
-    return `This action updates a #${id} class`;
+  async findOneByName(name: string) {
+    const classs = await this.ClassRepository.findOneBy({ name });
+    if (!classs)
+      throw new HttpException({ message: 'Classe not found.' }, HttpStatus.NOT_FOUND);
+    else
+      return classs;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} class`;
+  async update(id: string, updateClassesInput: UpdateClassesInput) {
+    const classs = await this.ClassRepository.findOneBy({ id: updateClassesInput.id });
+    if (!classs)
+      throw new HttpException({ message: 'Classe not found.' }, HttpStatus.NOT_FOUND);
+    else {
+      const classData = {
+        listEleves: updateClassesInput.listEleves,
+        capaciter: updateClassesInput.capaciter,
+      }
+      await this.ClassRepository.update({ id: updateClassesInput.id }, classData);
+      return this.ClassRepository.findOneBy({ id: updateClassesInput.id });
+    }
+  }
+
+  async remove(id: string) {
+    const user = await this.ClassRepository.findOneBy({ id });
+    if (!user)
+      throw new HttpException({ message: 'Class not found.' }, HttpStatus.NOT_FOUND);
+    else
+    if(user.listEleves == null || user.listEleves.length === 0)
+      return await this.ClassRepository.delete({ id });
   }
 }

@@ -1,34 +1,43 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { GradesService } from './grades.service';
 import { CreateGradeInput } from './dto/create-grade.input';
-import { UpdateGradeInput } from './dto/update-grade.input';
+import { Grade } from './entities/grade.entity';
+import { UpdateGradesInput } from './dto/update-grade.input';
+import { Role } from 'src/auth/guards/auth.enum';
+import { Roles } from 'src/auth/guards/auth.decorator';
 
 @Resolver('Grade')
 export class GradesResolver {
   constructor(private readonly gradesService: GradesService) {}
 
-  @Mutation('createGrade')
+  @Roles(Role.professor)
+  @Mutation(() => Grade)
   create(@Args('createGradeInput') createGradeInput: CreateGradeInput) {
     return this.gradesService.create(createGradeInput);
   }
 
-  @Query('grades')
-  findAll() {
-    return this.gradesService.findAll();
+
+  @Roles(Role.professor, Role.student)
+  @Query(() => [Grade], { name: 'allgradesStudent' })
+  async findAllNoteStudent(@Args('id') student_id: string) {
+    return this.gradesService.findAllNote(student_id);
   }
 
-  @Query('grade')
-  findOne(@Args('id') id: number) {
-    return this.gradesService.findOne(id);
+  @Roles(Role.professor, Role.student)
+  @Query(() => Grade, { name: 'grade' })
+  findOne(@Args('id') id: string) {
+    return this.gradesService.findOneById(id);
   }
 
-  @Mutation('updateGrade')
-  update(@Args('updateGradeInput') updateGradeInput: UpdateGradeInput) {
+  @Roles(Role.professor)
+  @Mutation(() => Grade)
+  update(@Args('updateGradeInput') updateGradeInput: UpdateGradesInput) {
     return this.gradesService.update(updateGradeInput.id, updateGradeInput);
   }
 
-  @Mutation('removeGrade')
-  remove(@Args('id') id: number) {
+  @Roles(Role.professor)
+  @Mutation(() => Boolean)
+  remove(@Args('id') id: string) {
     return this.gradesService.remove(id);
   }
 }

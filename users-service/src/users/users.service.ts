@@ -1,26 +1,89 @@
-import { Injectable } from '@nestjs/common';
+const argon2 = require('argon2');
+import { HttpException, HttpStatus, Injectable, Put, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { Repository } from 'typeorm';
+import { User } from './entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Role } from 'src/auth/guards/auth.enum';
+import { LoginInput, TokenStructure } from 'src/auth/dto/login.input';
 
 @Injectable()
 export class UsersService {
-  create(createUserInput: CreateUserInput) {
-    return 'This action adds a new user';
+  constructor(
+    @InjectRepository(User)
+    public usersRepository: Repository<User>,
+  ) { }
+
+  async create(createUserInput: CreateUserInput) {
+    const user = await this.usersRepository.findOneBy({ email: createUserInput.email });
+    if (user)
+      throw new HttpException({ message: 'Email already registered.' }, HttpStatus.NOT_FOUND);
+    else {
+      const userData = {
+        firstName: createUserInput.firsName,
+        lastName: createUserInput.lastName,
+        pseudo: createUserInput.pseudo, 
+        email: createUserInput.email,
+        password: await argon2.hash(createUserInput.password),
+      }
+      return await this.usersRepository.save(this.usersRepository.create(userData));
+    }
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    return await this.usersRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOneById(id: string) {
+    const user = await this.usersRepository.findOneBy({ id });
+    if (!user)
+      throw new HttpException({ message: 'User not found.' }, HttpStatus.NOT_FOUND);
+    else
+      return user;
   }
 
-  update(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
+  async findOneByName(lastName: string) {
+    const user = await this.usersRepository.findOneBy({ lastName });
+    if (!user)
+      throw new HttpException({ message: 'User not found.' }, HttpStatus.NOT_FOUND);
+    else
+      return user;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async findOneByEmail(email: string) {
+    const user = await this.usersRepository.findOneBy({ email });
+    if (!user)
+      throw new HttpException({ message: 'User not found.' }, HttpStatus.NOT_FOUND);
+    else
+      return user;
+  } 
+
+  
+  async update(id: String, updateUserInput: UpdateUserInput) {
+    const user = await this.usersRepository.findOneBy({ id: updateUserInput.id });
+    if (!user)
+      throw new HttpException({ message: 'User not found.' }, HttpStatus.NOT_FOUND);
+    else {
+      if (user.id !== user.id) {
+        throw new UnauthorizedException();
+      }else{
+        const userData = {
+          password: await argon2.hash(updateUserInput.password),
+          role: updateUserInput.role,
+        }
+        await this.usersRepository.update({ id: updateUserInput.id }, userData);
+        return this.usersRepository.findOneBy({ id: updateUserInput.id });
+      }
+      }
+      
+  }
+  
+  async remove(id: string) {
+    const user = await this.usersRepository.findOneBy({ id });
+    if (!user)
+      throw new HttpException({ message: 'User not found.' }, HttpStatus.NOT_FOUND);
+    else
+      return await this.usersRepository.delete({ id });   
   }
 }

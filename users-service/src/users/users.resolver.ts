@@ -1,34 +1,46 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { UsersService } from './users.service';
+import { User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { UsersService } from './users.service';
+import { Roles } from 'src/auth/guards/auth.decorator';
+import { Role } from 'src/auth/guards/auth.enum';
 
-@Resolver('User')
+@Resolver(() => User)
 export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
-  @Mutation('createUser')
-  create(@Args('createUserInput') createUserInput: CreateUserInput) {
+  @Mutation(() => User)
+  async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
     return this.usersService.create(createUserInput);
   }
 
-  @Query('users')
-  findAll() {
+  @Query(() => [User], { name: 'users' })
+  async findAll() {
     return this.usersService.findAll();
   }
 
-  @Query('user')
-  findOne(@Args('id') id: number) {
-    return this.usersService.findOne(id);
+  @Query(() => User, { name: 'user' })
+  async findOneByID(@Args('id', { type: () => String }) id: string) {
+    return this.usersService.findOneById(id);
   }
 
-  @Mutation('updateUser')
-  update(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
+  @Query(() => User, { name: 'findOneUserByName' })
+  async findOneByName(@Args('lastName', { type: () => String }) lastName: string) {
+    return this.usersService.findOneByName(lastName);
+  }
+
+  
+  @Roles(Role.student, Role.professor)
+  @Mutation(() => User)
+  async updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     return this.usersService.update(updateUserInput.id, updateUserInput);
   }
 
-  @Mutation('removeUser')
-  remove(@Args('id') id: number) {
-    return this.usersService.remove(id);
-  }
+  @Roles(Role.student, Role.professor)
+  @Mutation(() => Boolean)
+  async removeUser(@Args('id', { type: () => String }) id: string){
+    const result = await this.usersService.remove(id);
+    return result.affected > 0;
+}
 }
