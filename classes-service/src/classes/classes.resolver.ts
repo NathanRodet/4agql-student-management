@@ -1,5 +1,4 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { UUID } from './dto/params-user.input';
 import { ClassesService } from './classes.service';
 import { Classes } from './entities/classes.entity';
 import { CreateClassesInput } from './dto/create-class.input';
