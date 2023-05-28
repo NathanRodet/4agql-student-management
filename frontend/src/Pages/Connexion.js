@@ -1,17 +1,42 @@
-import React from 'react';
-import {MDBContainer, MDBCol, MDBRow, MDBBtn, MDBInput} from 'mdb-react-ui-kit';
-import {Link} from "react-router-dom";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import { MDBContainer, MDBCol, MDBRow, MDBBtn, MDBInput } from 'mdb-react-ui-kit';
+import { Link } from "react-router-dom";
+import { useToken } from "../composants/getToken";
+
+
 
 export default function Connexion() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [trigger, setTrigger] = useState(false);
+    const { data, loading, error } = useToken(trigger ? email : '', trigger ? password : '');
+
+    useEffect(() => {
+        if (!loading && data) {
+            // Handle successful token fetch
+            localStorage.setItem("token", data.login.access_token)
+            window.location.replace("/profil")
+        } else if (!loading && error) {
+        }
+    }, [loading, data, error]);
+
+    const connect = () => {
+        document.getElementsByClassName('err-mdp')[0].style.display = "none";
+        document.getElementsByClassName('err-logs')[0].style.display = "none";
+        setEmail(document.getElementById('mail').value);
+        setPassword(document.getElementById('mdp').value);
+        setTrigger(true);
+    }
+
+
 
     return (
         <MDBContainer fluid className="p-3 my-5 h-custom container reducesize">
 
             <MDBRow className='customRow'>
                 <MDBCol col='4' md='6'>
-                    <MDBInput wrapperClass='mb-4' label='Mail' id='mail' type='email' size="lg"/>
-                    <MDBInput wrapperClass='mb-4' label='Mot de passe' id='mdp' type='password' size="lg"/>
+                    <MDBInput wrapperClass='mb-4' label='Mail' id='mail' type='email' size="lg" />
+                    <MDBInput wrapperClass='mb-4' label='Mot de passe' id='mdp' type='password' size="lg" />
                     <div className="alert alert-warning nodisplay err-mdp" role="alert">
                         Le mot de passe n'est pas assez fort
                     </div>
@@ -28,35 +53,4 @@ export default function Connexion() {
             </MDBRow>
         </MDBContainer>
     );
-}
-
-function connect(){
-    document.getElementsByClassName('err-mdp')[0].style.display = "none";
-    document.getElementsByClassName('err-logs')[0].style.display = "none";
-    var mail = document.getElementById('mail').value;
-    var mdp = document.getElementById('mdp').value;
-    login(mail, mdp);
-}
-export const login = async (email, password) => {
-    const body = {
-        email: email,
-        password: password
-    }
-    try {
-        const res = await axios.post('http://localhost:3000/login', body);
-        localStorage.setItem("token", res.data)
-        window.location.replace("/profil")
-    } catch (error) {
-        if (typeof error.response === "undefined") {
-            return "error";
-        }
-
-        const err = JSON.parse(error.response.request.responseText);
-        if(err.message[0] === "password is not strong enough") {
-            document.getElementsByClassName('err-mdp')[0].style.display = "block";
-        }
-        if(err.message === "Wrong password"){
-            document.getElementsByClassName('err-logs')[0].style.display = "block";
-        }
-    }
 }
