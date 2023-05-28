@@ -16,11 +16,11 @@ export class Classes {
   @Column({ unique: false, nullable: false })
   professeur_Id: string;
 
-  @Field(() => [User], { description: 'list eleve field' })
+  @Field(() => [String], { description: 'list eleve field' })
   @Directive('@external')
   @Directive('@requires(fields: "id")')
   @Column("simple-array", { nullable: true })
-  listEleves: User[];
+  listEleves: string[];
 
   @Field(() => Number, { description: 'capaciter field' })
   @Column({ unique: false, nullable: false })
