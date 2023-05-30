@@ -1,8 +1,14 @@
-import React, { CSSProperties, useState } from 'react';
+import React, { CSSProperties, useEffect, useState } from 'react';
 import { useClassList } from "../composants/ClassList";
 import "../styles/Class.css";
 
 export default function Classes() {
+    useEffect(() => {
+        if(!isConnected()){
+            window.location.replace('/');
+            throw new Error('Page interdite');
+        }
+    }, []);
     const { data, loading, error } = useClassList();
     const [sortOrder, setSortOrder] = useState('asc');
 
@@ -45,3 +51,14 @@ export default function Classes() {
 
     );
 }
+
+function isConnected() {
+    var token = localStorage.getItem("token");
+    
+    if (token === null || token === "disconnected") {
+        return true;
+    }
+    return true;
+
+}
+

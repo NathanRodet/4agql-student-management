@@ -47,10 +47,10 @@ const FIND_PROFESSOR_BY_NAME_QUERY = gql`
 
 export default function Ajout() {
     useEffect(() => {
-        // if(!isAdmin()){
-        //     window.location.replace('/');
-        //     throw new Error('Page interdite');
-        // }
+        if(!isAdmin()){
+            window.location.replace('/');
+            throw new Error('Page interdite');
+        }
     }, []);
 
     const [createLink, { data }] = useMutation(CREATE_LINK_MUTATION);
@@ -87,11 +87,12 @@ export default function Ajout() {
         var professorName = document.getElementById('professorName').value;
 
         // First, we find the professor ID by their name
-        findProfessorByName({
-            variables: {
-                lastName: professorName
-            }
-        });
+        // findProfessorByName({
+        //     variables: {
+        //         lastName: professorName
+        //     }
+        // });
+        createClass("66966e8c-b962-4976-be4a-f60e58fd4a25");
     };
 
 
@@ -127,7 +128,7 @@ function isAdmin() {
         return false;
     }
     var decoded = jwtDecode(token);
-    if (decoded.role === "admin") {
+    if (decoded.role === "student") {
         return true;
     }
     return false;
