@@ -14,8 +14,6 @@ mutation CreateUser($email : String!, $firstName : String!, $lastName : String!,
         role
     }
 }
-
-
 `;
 
 export const useAccount = (nom, prenom, mail, pass) => {
