@@ -1,4 +1,4 @@
-# supinfo-4agql
+# Student Management
 
 - Rudy Turpin
 - Clément Eischen
